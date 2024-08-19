@@ -13,26 +13,9 @@ import { useCompletion } from "ai/react";
 import { Toaster, toast } from "react-hot-toast";
 import { LlamaTemplate, Llama3Template } from "../src/prompt_template";
 import TokenForm from "./components/TokenForm";
-
 import { countTokens } from "./src/tokenizer.js";
 
 const MODELS = [
-  {
-    id: "meta/meta-llama-3.1-405b-instruct",
-    name: "Meta Llama 3.1 405B",
-    shortened: "405B",
-    emoji: "🦙",
-    description: "The most accurate, powerful next generation Llama.",
-    new: true,
-  },
-  {
-    id: "meta/meta-llama-3-70b-instruct",
-    name: "Meta Llama 3 70B",
-    shortened: "70B",
-    emoji: "🦙",
-    description: "The strong, flexible medium-size Llama.",
-    new: true,
-  },
   {
     id: "meta/meta-llama-3-8b-instruct",
     name: "Meta Llama 3 8B",
@@ -42,26 +25,13 @@ const MODELS = [
     new: true,
   },
   {
-    id: "meta/llama-2-70b-chat",
-    name: "Meta Llama 2 70B",
+    id: "meta/meta-llama-3-70b-instruct",
+    name: "Meta Llama 3 70B",
     shortened: "70B",
     emoji: "🦙",
-    description: "The most accurate, powerful Llama 2",
-  },
-  {
-    id: "meta/llama-2-13b-chat",
-    name: "Meta Llama 2 13B",
-    shortened: "13B",
-    emoji: "🦙",
-    description: "Faster and cheaper Llama 2 at the expense of accuracy.",
-  },
-  {
-    id: "meta/llama-2-7b-chat",
-    name: "Meta Llama 2 7B",
-    shortened: "7B",
-    emoji: "🦙",
-    description: "The smallest, fastest Llama 2 chat model.",
-  },
+    description: "The strong, flexible medium-size Llama.",
+    new: true,
+  }
 ];
 
 const llamaTemplate = LlamaTemplate();
@@ -117,7 +87,7 @@ export default function HomePage() {
   //   Llama params
   const [model, setModel] = useState(MODELS[0]); // default to 405B
   const [systemPrompt, setSystemPrompt] = useState(
-    "You are a helpful assistant."
+    "You are a helpful assistant answering in the language of the question."
   );
   const [temp, setTemp] = useState(0.75);
   const [topP, setTopP] = useState(0.9);
@@ -259,12 +229,6 @@ export default function HomePage() {
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
 
-    if (localStorage.getItem("replicate_api_token")) {
-      setReplicateApiToken(localStorage.getItem("replicate_api_token"));
-      setTokenFormVisible(false);
-    } else {
-      setTokenFormVisible(true);
-    }
   }, [messages, completion]);
 
   if (tokenFormVisible) {
@@ -273,7 +237,6 @@ export default function HomePage() {
 
   return (
     <>
-      <CallToAction />
       <nav className="sm:pt-8 pt-4 px-4 sm:px-12 flex items-center">
         <div className="pr-3 font-semibold text-gray-500">Chat with</div>
         <div className="font-semibold text-gray-500 sm:text-center">

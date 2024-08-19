@@ -1,3 +1,4 @@
+import showdown from 'showdown';
 const Message = ({ message, isUser }) => {
   let containerClass = "bg-gray-100";
   if (isUser) {
@@ -12,6 +13,9 @@ const Message = ({ message, isUser }) => {
     return null;
   }
 
+  const converter = new showdown.Converter();  
+  const html = converter.makeHtml(message);
+
   return (
     <div
       className="flex gap-x-4 mb-8"
@@ -25,17 +29,8 @@ const Message = ({ message, isUser }) => {
           🦙
         </span>
       )}
+      <div className={`${containerClass} flex flex-col text-sm sm:text-base flex-1 gap-y-4 mt-1 p-5 rounded-md`} dangerouslySetInnerHTML={{ __html: html }}></div>
 
-      <div className={`${containerClass} flex flex-col text-sm sm:text-base flex-1 gap-y-4 mt-1 p-5 rounded-md`}>
-        {message.split("\n").map(
-          (text, index) =>
-            text.length > 0 && (
-              <span key={index} className="min-w-0">
-                {text}
-              </span>
-            )
-        )}
-      </div>
     </div>
   );
 };
